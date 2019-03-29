@@ -39,45 +39,50 @@ class Auction_upd
             'has_publish_fields' => 'n',
         ));
 
-        // Action Install
-        /*
-        ee()->db->insert('actions', array(
-            'class'  => 'Auction',
-            'method' => 'method_name'
-        ));
-        */
-
-
-        // Custom Table Install
-        /*
         ee()->load->dbforge();
 
         $fields = array(
-            // Keys
-            'entity_id'  => array('type' => 'INT', 'unsigned' => TRUE, 'auto_increment' => TRUE),
-            'site_id'    => array('type' => 'INT', 'unsigned' => TRUE, 'default' => 0),
-            'foreign_id' => array('type' => 'INT', 'unsigned' => TRUE, 'default' => 0),
-
-            // Text
-            'title'      => array('type' => 'VARCHAR', 'constraint' => '255', 'default' => ''),
-            'url_title'  => array('type' => 'VARCHAR', 'constraint' => '255', 'default' => ''),
-            'content'    => array('type' => 'TEXT', 'default' => ''),
-
-            // Dates
-            'created'    => array('type' => 'DATETIME'),
-            'updated'    => array('type' => 'DATETIME'),
-
-            // Misc
-            'status'     => array('type' => 'ENUM', 'constraint' => "'Open', 'Closed', 'Cancelled'", 'default'=> 'Open'),
-            'private'    => array('type' => 'BOOL', 'default' => 0),
+            'id' => array(
+                'type' => 'INT', 
+                'unsigned' => TRUE, 
+                'auto_increment' => TRUE
+            ),
+            'site_id' => array(
+                'type' => 'INT', 
+                'unsigned' => TRUE, 
+                'default' => 0
+            ),
+            'entry_id' => array(
+                'type' => 'INT',
+                'constraint' => '10',
+                'unsigned' => TRUE,
+                'null' => FALSE
+            ),
+            'member_id' => array(
+                'type' => 'INT',
+                'constraint' => '10',
+                'unsigned' => TRUE,
+                'null' => FALSE
+            ),
+            'bid_amount' => array(
+                'type' => 'DECIMAL',
+                'constraint' => '7,2',
+                'default' => '0.00',
+                'null' => FALSE
+            ),
+            'bid_date' => array(
+                'type' => 'INT',
+                'constraint' => '10',
+                'unsigned' => TRUE,
+                'default' => '0',
+                'null' => FALSE
+            ),
         );
 
         ee()->dbforge->add_field($fields);
-        ee()->dbforge->add_key('entity_id', TRUE);
-        ee()->dbforge->add_key('foreign_id');
+        ee()->dbforge->add_key('id', TRUE);
         ee()->dbforge->add_key('site_id');
-        ee()->dbforge->create_table('table_name', TRUE);
-        */
+        ee()->dbforge->create_table('auction', TRUE);
 
         return TRUE;
     }
@@ -95,11 +100,8 @@ class Auction_upd
         ee()->db->where('module_id', $mod_id)->delete('module_member_groups');
         ee()->db->where('module_name', 'Auction')->delete('modules');
 
-        // Custom Tables Uninstall
-        /*
         ee()->load->dbforge();
-        ee()->dbforge->drop_table('table_name');
-        */
+        ee()->dbforge->drop_table('auction');
 
         return TRUE;
     }
